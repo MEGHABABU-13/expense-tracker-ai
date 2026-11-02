@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+import database
+
 app = FastAPI(title="Expense Tracker AI")
+database.init_db()
 
 
 class ExpenseIn(BaseModel):
     description: str
     amount: float
-
-
-expenses = []
 
 
 @app.get("/")
@@ -19,15 +19,9 @@ def home():
 
 @app.post("/expenses")
 def add_expense(expense: ExpenseIn):
-    new_expense = {
-        "id": len(expenses) + 1,
-        "description": expense.description,
-        "amount": expense.amount,
-    }
-    expenses.append(new_expense)
-    return new_expense
+    return database.add_expense(expense.description, expense.amount)
 
 
 @app.get("/expenses")
 def list_expenses():
-    return expenses
+    return database.list_expenses()
