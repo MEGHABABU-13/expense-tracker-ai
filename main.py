@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+import categorizer
 import database
 
 app = FastAPI(title="Expense Tracker AI")
@@ -19,7 +20,8 @@ def home():
 
 @app.post("/expenses")
 def add_expense(expense: ExpenseIn):
-    return database.add_expense(expense.description, expense.amount)
+    category = categorizer.categorize(expense.description)
+    return database.add_expense(expense.description, expense.amount, category)
 
 
 @app.get("/expenses")
