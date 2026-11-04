@@ -5,7 +5,7 @@ from google import genai
 
 load_dotenv()
 
-MODEL = "gemini-3.5-flash"
+MODEL = "gemini-3.5-flash-lite"
 CATEGORIES = [
     "Food",
     "Transport",
@@ -34,9 +34,11 @@ def _ask_gemini(description):
             response = client.models.generate_content(model=MODEL, contents=prompt)
             return response.text or ""
         except Exception as error:
-            print(f"Gemini attempt {attempt + 1} failed: {error}")
+            print(f"Gemini attempt {attempt + 1} failed: {str(error)[:120]}")
+            if "429" in str(error):
+                break
             if attempt < 2:
-                time.sleep(2)
+                time.sleep(5 * (attempt + 1))
     return ""
 
 
