@@ -11,6 +11,15 @@ The project is built using Python, FastAPI, and SQLite.
 - **View Expenses:** Users can view all the expenses they have saved.
 - **Expense Categories:** Food, Transport, Shopping, Bills, Entertainment, Health, Education, and Other.
 
+   ```http
+   POST /expenses
+   {"description": "Swiggy dinner", "amount": 450}
+   ```
+   Response:
+   ```json
+   {"id": 1, "description": "Swiggy dinner", "amount": 450, "category": "Food"}
+   ```
+
 ## How Does It Work?
 
 1. The user sends an expense description and amount.
@@ -56,7 +65,7 @@ python accuracy_check.py
 ```
 
 ## Technologies Used
-
+Gemini model is set in categorizer.py (gemini-3.5-flash-lite); model names change often, so check Google’s current list.
 - Python – Main programming language.
 - FastAPI – To create the REST API.
 - Pydantic – To check and validate user input.
@@ -117,7 +126,7 @@ pytest -v
 ## Current Limitations
 
 - The application uses the Gemini free tier, which has usage limits.
-- If the AI fails, the expense is saved without a category.
+- If the AI fails, the expense is saved as Uncategorized.
 - Previously identified categories are stored in memory and are cleared when the application restarts.
 - The application does not currently have user registration or login features.
 
